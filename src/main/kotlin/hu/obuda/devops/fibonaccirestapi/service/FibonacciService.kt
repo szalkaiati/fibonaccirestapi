@@ -5,7 +5,20 @@ import org.springframework.stereotype.Service
 @Service
 class FibonacciService {
     fun fibonacci(n: Int): Int {
-        return if (n == 1) 0
-        else 0 // TODO instead of this logic implement fibonacci
+        require(n >= 0) { "n must be non-negative" }
+
+        if (n == 0) return 0
+        if (n == 1) return 1
+
+        var prev = 0
+        var current = 1
+
+        for (i in 2..n) {
+            val next = prev + current
+            prev = current
+            current = next
+        }
+
+        return current
     }
 }
