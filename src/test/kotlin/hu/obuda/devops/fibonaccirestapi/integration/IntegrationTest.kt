@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 
@@ -33,9 +34,7 @@ class IntegrationTest {
         // given
 
         // when
-        val thrown = Assertions.assertThrows(
-            RestClientException::class.java
-        ) {
+        val thrown = Assertions.assertThrows(HttpClientErrorException::class.java) {
             restTemplate.getForEntity(
                 "http://localhost:8080/fibonacci?n=47",
                 String::class.java
@@ -43,7 +42,7 @@ class IntegrationTest {
         }
 
         // then
-        Assertions.assertNotNull(thrown)
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, thrown.statusCode)
     }
 
 }
